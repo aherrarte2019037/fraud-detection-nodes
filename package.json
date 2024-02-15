@@ -1,0 +1,33 @@
+{
+  "name": "proyecto-db",
+  "version": "1.0.0",
+  "description": "REST API with Neo4j AuraDB",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aherrarte2019037/fraud-detection-nodes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aherrarte2019037/fraud-detection-nodes/issues"
+  },
+  "homepage": "https://github.com/aherrarte2019037/fraud-detection-nodes#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "morgan": "^1.10.0",
+    "neo4j-driver": "^5.28.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
