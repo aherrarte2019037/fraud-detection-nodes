@@ -16,8 +16,9 @@ const driver = neo4j.driver(uri, neo4j.auth.basic(user, password), {
 
 const verifyConnectivity = async () => {
   try {
-    await driver.verifyConnectivity();
+    const serverInfo = await driver.getServerInfo();
     console.log('✅ Connected to Neo4j!');
+    console.log('Server Info:', serverInfo);
     return true;
   } catch (error) {
     console.error('❌ Failed to connect to Neo4j:', error);

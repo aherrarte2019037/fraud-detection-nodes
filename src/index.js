@@ -21,7 +21,7 @@ app.get('/health', (_, res) => {
   res.status(200).json({ status: 'UP', message: 'Server is running' });
 });
 
-app.use((err, _, res, _) => {
+app.use((err, _, res, __) => {
   console.error(err.stack);
   res.status(500).json({
     status: 'error',
