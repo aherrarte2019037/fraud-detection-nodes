@@ -39,7 +39,7 @@ function generateClientData(count) {
       phoneNumber: faker.phone.number(),
       riskScore: parseFloat(faker.number.float({ min: 0, max: 1, precision: 0.01 })),
       creationDate: faker.date.past({ years: 5 }).toISOString(),
-      isActive: faker.datatype.boolean(0.9), // 90% activos
+      isActive: faker.datatype.boolean(0.9),
       address: faker.location.streetAddress(),
       city: faker.location.city(),
       country: faker.location.country(),
@@ -49,7 +49,7 @@ function generateClientData(count) {
       dateOfBirth: faker.date.birthdate({ min: 18, max: 80, mode: 'age' }).toISOString(),
       gender: faker.person.sex(),
       lastLoginDate: faker.date.recent({ days: 30 }).toISOString(),
-      fraudFlag: faker.datatype.boolean(0.05) // 5% de clientes marcados como fraudulentos
+      fraudFlag: faker.datatype.boolean(0.05)
     });
   }
 
@@ -60,7 +60,6 @@ function generateAccountData(clients) {
   const accounts = [];
 
   clients.forEach(client => {
-    // Generar entre 1 y 3 cuentas por cliente (reducido de 4)
     const accountCount = faker.number.int({ min: 1, max: 3 });
 
     for (let i = 0; i < accountCount; i++) {
@@ -160,19 +159,15 @@ function generateTransactionData(accounts, devices, locations, count) {
     const statuses = ['Completed', 'Pending', 'Failed', 'Cancelled'];
     const currencies = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD'];
 
-    // Seleccionar cuentas aleatorias para origen y destino
     const fromAccount = faker.helpers.arrayElement(accounts);
     let toAccount = faker.helpers.arrayElement(accounts);
-    // Asegurar que no sea la misma cuenta
     while (toAccount.accountId === fromAccount.accountId) {
       toAccount = faker.helpers.arrayElement(accounts);
     }
 
-    // Seleccionar un dispositivo y ubicación aleatorios
     const device = faker.helpers.arrayElement(devices);
     const location = faker.helpers.arrayElement(locations);
 
-    // Definir un monto de transacción (relacionado con el monto promedio de transacción de la cuenta)
     const baseAmount = parseFloat(fromAccount.averageTransactionAmount);
     const amount = parseFloat(faker.finance.amount({
       min: baseAmount * 0.1,
@@ -180,7 +175,6 @@ function generateTransactionData(accounts, devices, locations, count) {
       dec: 2
     }));
 
-    // Fecha de transacción (más probable reciente que antigua)
     const date = faker.date.recent({ days: 365 }).toISOString();
 
     transactions.push({
@@ -211,18 +205,14 @@ function generateFraudPatterns(accounts, devices, locations) {
   const fraudTransactions = [];
   const fraudPatterns = [];
 
-  // 1. Patrón de transacciones circulares (lavado de dinero)
   console.log('Generating circular transaction fraud patterns...');
 
-  // Reducido de 5 a 3 patrones
   for (let i = 0; i < 3; i++) {
-    // Seleccionar 3 cuentas distintas al azar
     const selectedAccounts = faker.helpers.shuffle([...accounts]).slice(0, 3);
     const a1 = selectedAccounts[0];
     const a2 = selectedAccounts[1];
     const a3 = selectedAccounts[2];
 
-    // Seleccionar un dispositivo y ubicación de alto riesgo
     const highRiskDevices = devices.filter(d => d.riskScore > 0.7);
     const highRiskLocations = locations.filter(l => l.riskLevel === 'High' || l.isKnownFraudHotspot);
 
@@ -234,10 +224,8 @@ function generateFraudPatterns(accounts, devices, locations) {
       ? faker.helpers.arrayElement(highRiskLocations)
       : faker.helpers.arrayElement(locations);
 
-    // Crear una fecha base para las transacciones (dentro de las últimas 48 horas)
     const baseDate = faker.date.recent({ days: 2 });
 
-    // Transacción 1: A1 -> A2
     const t1 = {
       transactionId: `FT${i}1`,
       fromAccountId: a1.accountId,
@@ -257,16 +245,14 @@ function generateFraudPatterns(accounts, devices, locations) {
       referenceNumber: `FRAUD-C${i}1`
     };
 
-    // Transacción 2: A2 -> A3 (pocas horas después)
     const t2 = {
       transactionId: `FT${i}2`,
       fromAccountId: a2.accountId,
       toAccountId: a3.accountId,
       deviceId: device.deviceId,
       locationId: location.locationId,
-      // Monto similar a la transacción anterior (variación del 10%)
       amount: t1.amount * (1 - faker.number.float({ min: 0.02, max: 0.1 })),
-      date: new Date(baseDate.getTime() + 1000 * 60 * 60 * 2).toISOString(), // 2 horas después
+      date: new Date(baseDate.getTime() + 1000 * 60 * 60 * 2).toISOString(),
       status: 'Completed',
       type: 'Wire',
       description: 'Consulting fees',
@@ -278,16 +264,14 @@ function generateFraudPatterns(accounts, devices, locations) {
       referenceNumber: `FRAUD-C${i}2`
     };
 
-    // Transacción 3: A3 -> A1 (pocas horas después)
     const t3 = {
       transactionId: `FT${i}3`,
       fromAccountId: a3.accountId,
       toAccountId: a1.accountId,
       deviceId: device.deviceId,
       locationId: location.locationId,
-      // Monto similar a la transacción anterior (variación del 10%)
       amount: t2.amount * (1 - faker.number.float({ min: 0.02, max: 0.1 })),
-      date: new Date(baseDate.getTime() + 1000 * 60 * 60 * 5).toISOString(), // 5 horas después
+      date: new Date(baseDate.getTime() + 1000 * 60 * 60 * 5).toISOString(),
       status: 'Completed',
       type: 'Wire',
       description: 'Return on investment',
@@ -312,15 +296,11 @@ function generateFraudPatterns(accounts, devices, locations) {
     });
   }
 
-  // 2. Patrón de transacciones rápidas y sucesivas
   console.log('Generating rapid successive transaction fraud patterns...');
 
-  // Reducido de 5 a 3 patrones
   for (let i = 0; i < 3; i++) {
-    // Seleccionar una cuenta origen
     const fromAccount = faker.helpers.arrayElement(accounts);
 
-    // Seleccionar un dispositivo y ubicación de alto riesgo
     const highRiskDevices = devices.filter(d => d.riskScore > 0.7);
     const device = highRiskDevices.length > 0
       ? faker.helpers.arrayElement(highRiskDevices)
@@ -328,22 +308,18 @@ function generateFraudPatterns(accounts, devices, locations) {
 
     const location = faker.helpers.arrayElement(locations);
 
-    // Crear una fecha base para las transacciones (dentro de las últimas 48 horas)
     const baseDate = faker.date.recent({ days: 2 });
 
-    // Generar entre 3 y 6 transacciones rápidas (reducido de 5-10)
     const transactionCount = faker.number.int({ min: 3, max: 6 });
     const rapidTransactions = [];
 
     for (let j = 0; j < transactionCount; j++) {
-      // Seleccionar una cuenta destino distinta a la origen
       let toAccount = faker.helpers.arrayElement(accounts);
       while (toAccount.accountId === fromAccount.accountId) {
         toAccount = faker.helpers.arrayElement(accounts);
       }
 
-      // Cada transacción ocurre pocos minutos después de la anterior
-      const transactionDate = new Date(baseDate.getTime() + 1000 * 60 * j * 3); // 3 minutos entre transacciones
+      const transactionDate = new Date(baseDate.getTime() + 1000 * 60 * j * 3);
 
       const transaction = {
         transactionId: `FT${i}R${j}`,
@@ -379,31 +355,24 @@ function generateFraudPatterns(accounts, devices, locations) {
     });
   }
 
-  // 3. Patrón de acceso desde múltiples ubicaciones en poco tiempo
   console.log('Generating multi-location fraud patterns...');
 
-  // Reducido de 5 a 3 patrones
   for (let i = 0; i < 3; i++) {
-    // Seleccionar una cuenta
     const account = faker.helpers.arrayElement(accounts);
 
-    // Seleccionar múltiples ubicaciones distantes
     const selectedLocations = faker.helpers.shuffle([...locations]).slice(0, 3);
 
-    // Crear una fecha base para las transacciones (dentro de las últimas 48 horas)
     const baseDate = faker.date.recent({ days: 2 });
 
     const multiLocationTransactions = [];
 
     for (let j = 0; j < 3; j++) {
-      // Seleccionar una cuenta destino distinta a la origen
       let toAccount = faker.helpers.arrayElement(accounts);
       while (toAccount.accountId === account.accountId) {
         toAccount = faker.helpers.arrayElement(accounts);
       }
 
-      // Cada transacción ocurre pocas horas después de la anterior, desde distintas ubicaciones
-      const transactionDate = new Date(baseDate.getTime() + 1000 * 60 * 60 * j * 2); // 2 horas entre transacciones
+      const transactionDate = new Date(baseDate.getTime() + 1000 * 60 * 60 * j * 2);
 
       const transaction = {
         transactionId: `FT${i}L${j}`,
@@ -440,9 +409,8 @@ function generateFraudPatterns(accounts, devices, locations) {
   return { fraudTransactions, fraudPatterns };
 }
 
-// Función para cargar clientes en lotes pequeños
 async function loadClientsInBatches(clients) {
-  const batchSize = 50; // Lotes mucho más pequeños
+  const batchSize = 50;
   console.log(`Loading ${clients.length} clients in batches of ${batchSize}...`);
 
   for (let i = 0; i < clients.length; i += batchSize) {
@@ -475,9 +443,8 @@ async function loadClientsInBatches(clients) {
   }
 }
 
-// Función para cargar cuentas en lotes pequeños
 async function loadAccountsInBatches(accounts) {
-  const batchSize = 50; // Lotes mucho más pequeños
+  const batchSize = 50;
   console.log(`Loading ${accounts.length} accounts in batches of ${batchSize}...`);
 
   for (let i = 0; i < accounts.length; i += batchSize) {
@@ -505,7 +472,6 @@ async function loadAccountsInBatches(accounts) {
     `, { accounts: batch });
   }
 
-  // Crear relaciones OWNS en lotes separados
   console.log("Creating OWNS relationships...");
   for (let i = 0; i < accounts.length; i += batchSize) {
     const batch = accounts.slice(i, i + batchSize);
@@ -524,7 +490,6 @@ async function loadAccountsInBatches(accounts) {
   }
 }
 
-// Función para cargar dispositivos en lotes pequeños
 async function loadDevicesInBatches(devices) {
   const batchSize = 50;
   console.log(`Loading ${devices.length} devices in batches of ${batchSize}...`);
@@ -555,7 +520,6 @@ async function loadDevicesInBatches(devices) {
   }
 }
 
-// Función para cargar ubicaciones en lotes pequeños
 async function loadLocationsInBatches(locations) {
   const batchSize = 50;
   console.log(`Loading ${locations.length} locations in batches of ${batchSize}...`);
@@ -585,16 +549,14 @@ async function loadLocationsInBatches(locations) {
   }
 }
 
-// Función para cargar transacciones y sus relaciones en lotes muy pequeños
 async function loadTransactionsInBatches(transactions) {
-  const batchSize = 25; // Lotes extremadamente pequeños para evitar problemas de memoria
+  const batchSize = 25;
   console.log(`Loading ${transactions.length} transactions in batches of ${batchSize}...`);
 
   for (let i = 0; i < transactions.length; i += batchSize) {
     const batch = transactions.slice(i, i + batchSize);
     console.log(`Processing transaction batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(transactions.length / batchSize)}...`);
 
-    // Crear nodos de transacción primero
     await executeQuery(`
       UNWIND $transactions AS tx
       CREATE (t:Transaction {
@@ -614,7 +576,6 @@ async function loadTransactionsInBatches(transactions) {
       })
     `, { transactions: batch });
 
-    // Crear relaciones FROM en una consulta separada
     await executeQuery(`
       UNWIND $transactions AS tx
       MATCH (t:Transaction {transactionId: tx.transactionId})
@@ -626,7 +587,6 @@ async function loadTransactionsInBatches(transactions) {
       }]->(from)
     `, { transactions: batch });
 
-    // Crear relaciones TO en una consulta separada
     await executeQuery(`
       UNWIND $transactions AS tx
       MATCH (t:Transaction {transactionId: tx.transactionId})
@@ -638,7 +598,6 @@ async function loadTransactionsInBatches(transactions) {
       }]->(to)
     `, { transactions: batch });
 
-    // Crear relaciones MADE_FROM en una consulta separada
     await executeQuery(`
       UNWIND $transactions AS tx
       MATCH (t:Transaction {transactionId: tx.transactionId})
@@ -650,7 +609,6 @@ async function loadTransactionsInBatches(transactions) {
       }]->(device)
     `, { transactions: batch });
 
-    // Crear relaciones OCCURRED_AT en una consulta separada
     await executeQuery(`
       UNWIND $transactions AS tx
       MATCH (t:Transaction {transactionId: tx.transactionId})
@@ -664,17 +622,14 @@ async function loadTransactionsInBatches(transactions) {
   }
 }
 
-// Función simplificada para asegurar que el grafo sea conexo
 async function ensureGraphIsConnected() {
   console.log('Ensuring graph is connected...');
 
-  // Crear un nodo Hub central si no existe
   await executeQuery(`
     MERGE (hub:Hub {name: 'ConnectionHub'})
     RETURN hub
   `);
 
-  // Identificar nodos desconectados (limitar a 50 para evitar problemas de memoria)
   const disconnectedResult = await executeQuery(`
     MATCH (n)
     WHERE NOT (n)--()
@@ -682,12 +637,10 @@ async function ensureGraphIsConnected() {
     LIMIT 50
   `);
 
-  // Modificado: ya es un número, no necesita .toNumber()
   const disconnectedIds = disconnectedResult.records.map(record => record.get('nodeId'));
 
   console.log(`Found ${disconnectedIds.length} disconnected nodes`);
 
-  // Conectar los nodos desconectados al hub en lotes pequeños
   const batchSize = 10;
   for (let i = 0; i < disconnectedIds.length; i += batchSize) {
     const batch = disconnectedIds.slice(i, i + batchSize);
@@ -704,7 +657,6 @@ async function ensureGraphIsConnected() {
     }
   }
 
-  // Añadir conexiones aleatorias para asegurar que el grafo esté bien conectado
   await executeQuery(`
     MATCH (a:Client)
     MATCH (b:Client)
@@ -743,7 +695,6 @@ async function loadFraudPatternsInBatches(fraudPatterns) {
     `, { patterns: batch });
   }
 
-  // Crear conexiones entre patrones y transacciones en lotes pequeños
   const circularPatterns = fraudPatterns.filter(p => p.type === 'CircularTransaction');
 
   for (const pattern of circularPatterns) {
@@ -760,7 +711,6 @@ async function loadFraudPatternsInBatches(fraudPatterns) {
 
 async function generateAndLoadData(shouldClear = false, nodeCount = 5000) {
   try {
-    // Verificar conectividad con Neo4j
     const verifySession = driver.session();
     try {
       await verifySession.run('RETURN 1');
@@ -769,21 +719,18 @@ async function generateAndLoadData(shouldClear = false, nodeCount = 5000) {
       await verifySession.close();
     }
 
-    // Limpiar la base de datos si es necesario
     if (shouldClear) {
       await clearDatabase();
       console.log('Database cleared successfully');
       return;
     }
 
-    // Usar un número de nodos más pequeño para evitar problemas de memoria
-    // pero aún cumpliendo con el requisito mínimo de 5000
     nodeCount = 5000;
     console.log(`Generating data for approximately ${nodeCount} nodes...`);
 
-    // Distribución ajustada de nodos:
+    // Distribución de nodos:
     // - 8% clientes
-    // - 22% cuentas (casi 3 por cliente)
+    // - 22% cuentas (aproximadamente 3 por cliente)
     // - 15% dispositivos
     // - 10% ubicaciones
     // - 45% transacciones
@@ -805,20 +752,16 @@ async function generateAndLoadData(shouldClear = false, nodeCount = 5000) {
     console.log(`Generating ${locationCount} locations...`);
     const locations = generateLocationData(locationCount);
 
-    // El resto serán transacciones para llegar al total de nodos
     const remainingNodes = nodeCount - clientCount - accounts.length - deviceCount - locationCount;
     const transactionCount = Math.max(remainingNodes, 0);
     console.log(`Generating ${transactionCount} regular transactions...`);
     const transactions = generateTransactionData(accounts, devices, locations, transactionCount);
 
-    // Generar patrones de fraude adicionales (reducidos)
     console.log('Generating fraud patterns...');
     const { fraudTransactions, fraudPatterns } = generateFraudPatterns(accounts, devices, locations);
 
-    // Combinar transacciones regulares y fraudulentas
     const allTransactions = [...transactions, ...fraudTransactions];
 
-    // Cargar todos los datos en lotes pequeños
     await loadClientsInBatches(clients);
     await loadAccountsInBatches(accounts);
     await loadDevicesInBatches(devices);
@@ -826,14 +769,11 @@ async function generateAndLoadData(shouldClear = false, nodeCount = 5000) {
     await loadTransactionsInBatches(allTransactions);
     await loadFraudPatternsInBatches(fraudPatterns);
 
-    // Asegurar que el grafo esté conectado de manera más eficiente
     await ensureGraphIsConnected();
 
-    // Verificar la cantidad de nodos
     const countSession = driver.session();
     try {
       const result = await countSession.run('MATCH (n) RETURN count(n) as nodeCount');
-      // Quitar .toNumber() ya que disableLosslessIntegers está establecido en true
       const nodeCount = result.records[0].get('nodeCount');
       console.log(`Total nodes in database: ${nodeCount}`);
 
