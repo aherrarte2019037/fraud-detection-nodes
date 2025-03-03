@@ -4,6 +4,18 @@ import ClientModel from '../models/ClientModel.js';
 class ClientController extends BaseController {
   constructor() {
     super(ClientModel);
+    
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.addProperties = this.addProperties.bind(this);
+    this.removeProperties = this.removeProperties.bind(this);
+
+    this.findByIdentificationNumber = this.findByIdentificationNumber.bind(this);
+    this.findClientsWithMultipleAccounts = this.findClientsWithMultipleAccounts.bind(this);
+    this.findClientsByRiskScore = this.findClientsByRiskScore.bind(this);
   }
 
   async findByIdentificationNumber(req, res, next) {

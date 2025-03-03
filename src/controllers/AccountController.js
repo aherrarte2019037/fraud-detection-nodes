@@ -4,6 +4,19 @@ import AccountModel from '../models/AccountModel.js';
 class AccountController extends BaseController {
   constructor() {
     super(AccountModel);
+
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.addProperties = this.addProperties.bind(this);
+    this.removeProperties = this.removeProperties.bind(this);
+
+    this.findByAccountNumber = this.findByAccountNumber.bind(this);
+    this.findAccountsWithOwner = this.findAccountsWithOwner.bind(this);
+    this.findAccountsWithHighBalanceChange = this.findAccountsWithHighBalanceChange.bind(this);
+    this.findRecentAccounts = this.findRecentAccounts.bind(this);
   }
 
   async findByAccountNumber(req, res, next) {

@@ -4,6 +4,18 @@ import LocationModel from '../models/LocationModel.js';
 class LocationController extends BaseController {
   constructor() {
     super(LocationModel);
+
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.addProperties = this.addProperties.bind(this);
+    this.removeProperties = this.removeProperties.bind(this);
+
+    this.findByCoordinates = this.findByCoordinates.bind(this);
+    this.findHighRiskLocations = this.findHighRiskLocations.bind(this);
+    this.findUnusualTransactionLocations = this.findUnusualTransactionLocations.bind(this);
   }
 
   async findByCoordinates(req, res, next) {

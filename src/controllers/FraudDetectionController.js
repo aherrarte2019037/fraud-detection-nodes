@@ -4,6 +4,21 @@ import FraudDetectionModel from '../models/FraudDetectionModel.js';
 class FraudDetectionController extends BaseController {
   constructor() {
     super(FraudDetectionModel);
+
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.addProperties = this.addProperties.bind(this);
+    this.removeProperties = this.removeProperties.bind(this);
+
+    this.findPotentialMoneyLaundering = this.findPotentialMoneyLaundering.bind(this);
+    this.findUnusualDeviceUsage = this.findUnusualDeviceUsage.bind(this);
+    this.findRapidSuccessiveTransactions = this.findRapidSuccessiveTransactions.bind(this);
+    this.findUnusualTransactionPatterns = this.findUnusualTransactionPatterns.bind(this);
+    this.findAccountsWithUnusualActivityIncrease = this.findAccountsWithUnusualActivityIncrease.bind(this);
+    this.aggregateTransactionsByRiskCategory = this.aggregateTransactionsByRiskCategory.bind(this);
   }
 
   async findPotentialMoneyLaundering(req, res, next) {

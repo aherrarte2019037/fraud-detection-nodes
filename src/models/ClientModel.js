@@ -1,4 +1,4 @@
-import BaseModel from './baseModel.js';
+import BaseModel from './BaseModel.js';
 
 class ClientModel extends BaseModel {
   constructor() {

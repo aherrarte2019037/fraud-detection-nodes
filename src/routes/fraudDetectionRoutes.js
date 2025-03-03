@@ -1,6 +1,5 @@
 import express from 'express';
 import FraudDetectionController from '../controllers/FraudDetectionController.js';
-
 const router = express.Router();
 
 router.post('/query', FraudDetectionController.executeQuery);

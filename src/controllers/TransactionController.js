@@ -4,6 +4,21 @@ import TransactionModel from '../models/TransactionModel.js';
 class TransactionController extends BaseController {
   constructor() {
     super(TransactionModel);
+
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.addProperties = this.addProperties.bind(this);
+    this.removeProperties = this.removeProperties.bind(this);
+
+    this.findByTransactionId = this.findByTransactionId.bind(this);
+    this.findInDateRange = this.findInDateRange.bind(this);
+    this.findByAmount = this.findByAmount.bind(this);
+    this.findSuspicious = this.findSuspicious.bind(this);
+    this.findCircularPatterns = this.findCircularPatterns.bind(this);
+    this.findBetweenAccounts = this.findBetweenAccounts.bind(this);
   }
 
   async findByTransactionId(req, res, next) {
