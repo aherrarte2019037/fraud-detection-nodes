@@ -1,0 +1,1603 @@
+{
+  "info": {
+    "_postman_id": "6f8c8d0e-f93a-4d5c-bd3a-92d0f098a91e",
+    "name": "Neo4j Fraud Detection API",
+    "description": "API para el sistema de detección de fraude bancario utilizando Neo4j",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "Obtener todos los clientes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients"
+              ]
+            },
+            "description": "Obtiene una lista de todos los clientes registrados en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener cliente por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "123",
+                  "description": "ID del cliente"
+                }
+              ]
+            },
+            "description": "Obtiene un cliente específico por su ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Crear cliente",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": \"C9999\",\n  \"name\": \"John Doe\",\n  \"identificationNumber\": \"123456789\",\n  \"email\": \"john@example.com\",\n  \"phoneNumber\": \"555-123-4567\",\n  \"riskScore\": 0.25,\n  \"isActive\": true,\n  \"address\": \"123 Main St\",\n  \"city\": \"New York\",\n  \"country\": \"USA\",\n  \"postalCode\": \"10001\",\n  \"occupation\": \"Software Developer\",\n  \"annualIncome\": 85000,\n  \"dateOfBirth\": \"1985-05-15\",\n  \"gender\": \"Male\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Crea un nuevo cliente en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar cliente",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "123",
+                  "description": "ID del cliente"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"email\": \"john.updated@example.com\",\n  \"phoneNumber\": \"555-987-6543\",\n  \"address\": \"456 New St\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Actualiza la información de un cliente existente."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar cliente",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "123",
+                  "description": "ID del cliente"
+                }
+              ]
+            },
+            "description": "Elimina un cliente del sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar cliente por número de identificación",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/identification/:idNumber",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                "identification",
+                ":idNumber"
+              ],
+              "variable": [
+                {
+                  "key": "idNumber",
+                  "value": "123456789",
+                  "description": "Número de identificación del cliente"
+                }
+              ]
+            },
+            "description": "Busca un cliente por su número de identificación."
+          },
+          "response": []
+        },
+        {
+          "name": "Clientes con múltiples cuentas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/multiple-accounts?minAccounts=3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                "multiple-accounts"
+              ],
+              "query": [
+                {
+                  "key": "minAccounts",
+                  "value": "3",
+                  "description": "Número mínimo de cuentas"
+                }
+              ]
+            },
+            "description": "Obtiene los clientes que tienen múltiples cuentas."
+          },
+          "response": []
+        },
+        {
+          "name": "Clientes por riesgo",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/risk-score?minScore=0.7&maxScore=1.0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                "risk-score"
+              ],
+              "query": [
+                {
+                  "key": "minScore",
+                  "value": "0.7",
+                  "description": "Puntuación mínima de riesgo"
+                },
+                {
+                  "key": "maxScore",
+                  "value": "1.0",
+                  "description": "Puntuación máxima de riesgo"
+                }
+              ]
+            },
+            "description": "Obtiene los clientes con un puntaje de riesgo dentro de un rango específico."
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar propiedades al cliente",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/:id/properties",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                ":id",
+                "properties"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "123",
+                  "description": "ID del cliente"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"loyaltyLevel\": \"Gold\",\n  \"lastReviewDate\": \"2023-05-15\",\n  \"taxId\": \"TX987654321\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Agrega nuevas propiedades a un cliente existente."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar propiedades del cliente",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/:id/properties",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                ":id",
+                "properties"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "123",
+                  "description": "ID del cliente"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": [\"loyaltyLevel\", \"taxId\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Elimina propiedades específicas de un cliente."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualización masiva de clientes",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/batch/update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                "batch",
+                "update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ids\": [\"123\", \"456\", \"789\"],\n  \"properties\": {\n    \"status\": \"Verified\",\n    \"lastVerificationDate\": \"2023-06-01\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Actualiza propiedades en múltiples clientes al mismo tiempo."
+          },
+          "response": []
+        },
+        {
+          "name": "Crear relación entre cliente y cuenta",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/clients/:fromId/relationship/:type/:toId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clients",
+                ":fromId",
+                "relationship",
+                ":type",
+                ":toId"
+              ],
+              "variable": [
+                {
+                  "key": "fromId",
+                  "value": "123",
+                  "description": "ID del cliente"
+                },
+                {
+                  "key": "type",
+                  "value": "OWNS",
+                  "description": "Tipo de relación"
+                },
+                {
+                  "key": "toId",
+                  "value": "456",
+                  "description": "ID de la cuenta"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"since\": \"2023-01-15\",\n  \"isPrimary\": true,\n  \"accessLevel\": \"Full\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Crea una relación entre un cliente y una cuenta."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para gestionar clientes en el sistema."
+    },
+    {
+      "name": "Cuentas",
+      "item": [
+        {
+          "name": "Obtener todas las cuentas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts"
+              ]
+            },
+            "description": "Obtiene una lista de todas las cuentas registradas en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener cuenta por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "456",
+                  "description": "ID de la cuenta"
+                }
+              ]
+            },
+            "description": "Obtiene una cuenta específica por su ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Crear cuenta",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountId\": \"A9999\",\n  \"accountNumber\": \"ACC-9999-1234\",\n  \"balance\": 5000.75,\n  \"accountType\": \"Checking\",\n  \"currency\": \"USD\",\n  \"status\": \"Active\",\n  \"interestRate\": 1.25,\n  \"overdraftLimit\": 1000.00,\n  \"averageTransactionAmount\": 450.50,\n  \"creditScore\": 720\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Crea una nueva cuenta en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar cuenta",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "456",
+                  "description": "ID de la cuenta"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"balance\": 6500.25,\n  \"status\": \"Active\",\n  \"overdraftLimit\": 1500.00\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Actualiza la información de una cuenta existente."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar cuenta",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "456",
+                  "description": "ID de la cuenta"
+                }
+              ]
+            },
+            "description": "Elimina una cuenta del sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar cuenta por número",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts/number/:accountNumber",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "number",
+                ":accountNumber"
+              ],
+              "variable": [
+                {
+                  "key": "accountNumber",
+                  "value": "ACC-9999-1234",
+                  "description": "Número de cuenta"
+                }
+              ]
+            },
+            "description": "Busca una cuenta por su número de cuenta."
+          },
+          "response": []
+        },
+        {
+          "name": "Cuentas con propietario",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts/with-owner",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "with-owner"
+              ]
+            },
+            "description": "Obtiene las cuentas junto con sus propietarios."
+          },
+          "response": []
+        },
+        {
+          "name": "Cuentas con cambios grandes de saldo",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts/high-balance-change?percentChange=50&days=30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "high-balance-change"
+              ],
+              "query": [
+                {
+                  "key": "percentChange",
+                  "value": "50",
+                  "description": "Porcentaje de cambio mínimo"
+                },
+                {
+                  "key": "days",
+                  "value": "30",
+                  "description": "Días atrás para considerar"
+                }
+              ]
+            },
+            "description": "Obtiene las cuentas con cambios significativos en el saldo durante un período de tiempo."
+          },
+          "response": []
+        },
+        {
+          "name": "Cuentas recientes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/accounts/recent?days=90",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "recent"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "90",
+                  "description": "Días atrás para considerar como reciente"
+                }
+              ]
+            },
+            "description": "Obtiene las cuentas creadas recientemente."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para gestionar cuentas bancarias en el sistema."
+    },
+    {
+      "name": "Transacciones",
+      "item": [
+        {
+          "name": "Obtener todas las transacciones",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions"
+              ]
+            },
+            "description": "Obtiene una lista de todas las transacciones registradas en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener transacción por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "789",
+                  "description": "ID de la transacción"
+                }
+              ]
+            },
+            "description": "Obtiene una transacción específica por su ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Crear transacción",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transactionId\": \"T9999\",\n  \"amount\": 1250.50,\n  \"date\": \"2023-06-15T14:30:00Z\",\n  \"status\": \"Completed\",\n  \"type\": \"Transfer\",\n  \"description\": \"Monthly payment\",\n  \"currency\": \"USD\",\n  \"riskScore\": 0.15,\n  \"isInternational\": false,\n  \"fee\": 2.50,\n  \"referenceNumber\": \"REF-12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Crea una nueva transacción en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar transacción",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "789",
+                  "description": "ID de la transacción"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Failed\",\n  \"description\": \"Payment failed due to insufficient funds\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Actualiza la información de una transacción existente."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar transacción",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "789",
+                  "description": "ID de la transacción"
+                }
+              ]
+            },
+            "description": "Elimina una transacción del sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar transacción por ID de transacción",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/by-id/:transactionId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "by-id",
+                ":transactionId"
+              ],
+              "variable": [
+                {
+                  "key": "transactionId",
+                  "value": "T9999",
+                  "description": "ID único de la transacción"
+                }
+              ]
+            },
+            "description": "Busca una transacción por su ID único."
+          },
+          "response": []
+        },
+        {
+          "name": "Transacciones en rango de fechas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/date-range?startDate=2023-01-01&endDate=2023-06-30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "date-range"
+              ],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2023-01-01",
+                  "description": "Fecha de inicio (YYYY-MM-DD)"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2023-06-30",
+                  "description": "Fecha de fin (YYYY-MM-DD)"
+                }
+              ]
+            },
+            "description": "Obtiene las transacciones dentro de un rango de fechas específico."
+          },
+          "response": []
+        },
+        {
+          "name": "Transacciones por monto",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/by-amount?minAmount=1000&maxAmount=5000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "by-amount"
+              ],
+              "query": [
+                {
+                  "key": "minAmount",
+                  "value": "1000",
+                  "description": "Monto mínimo"
+                },
+                {
+                  "key": "maxAmount",
+                  "value": "5000",
+                  "description": "Monto máximo"
+                }
+              ]
+            },
+            "description": "Obtiene las transacciones dentro de un rango de montos específico."
+          },
+          "response": []
+        },
+        {
+          "name": "Transacciones sospechosas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/suspicious?threshold=10000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "suspicious"
+              ],
+              "query": [
+                {
+                  "key": "threshold",
+                  "value": "10000",
+                  "description": "Umbral de monto para considerar sospechoso"
+                }
+              ]
+            },
+            "description": "Obtiene las transacciones consideradas sospechosas basadas en criterios como monto y puntuación de riesgo."
+          },
+          "response": []
+        },
+        {
+          "name": "Patrones de transacciones circulares",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/circular-patterns?maxDepth=4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "circular-patterns"
+              ],
+              "query": [
+                {
+                  "key": "maxDepth",
+                  "value": "4",
+                  "description": "Profundidad máxima para buscar patrones circulares"
+                }
+              ]
+            },
+            "description": "Detecta patrones de transacciones circulares que podrían indicar actividades de lavado de dinero."
+          },
+          "response": []
+        },
+        {
+          "name": "Transacciones entre cuentas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/between/:fromAccountId/:toAccountId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "between",
+                ":fromAccountId",
+                ":toAccountId"
+              ],
+              "variable": [
+                {
+                  "key": "fromAccountId",
+                  "value": "123",
+                  "description": "ID de la cuenta de origen"
+                },
+                {
+                  "key": "toAccountId",
+                  "value": "456",
+                  "description": "ID de la cuenta de destino"
+                }
+              ]
+            },
+            "description": "Obtiene las transacciones realizadas entre dos cuentas específicas."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para gestionar transacciones bancarias en el sistema."
+    },
+    {
+      "name": "Dispositivos",
+      "item": [
+        {
+          "name": "Obtener todos los dispositivos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/devices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "devices"
+              ]
+            },
+            "description": "Obtiene una lista de todos los dispositivos registrados en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener dispositivo por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "devices",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "333",
+                  "description": "ID del dispositivo"
+                }
+              ]
+            },
+            "description": "Obtiene un dispositivo específico por su ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Crear dispositivo",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/devices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "devices"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceId\": \"D9999\",\n  \"type\": \"Mobile\",\n  \"ipAddress\": \"192.168.1.100\",\n  \"userAgent\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X)\",\n  \"operatingSystem\": \"iOS\",\n  \"browser\": \"Safari\",\n  \"isTrusted\": true,\n  \"deviceFingerprint\": \"FP-12345-ABCDE\",\n  \"screenResolution\": \"1920x1080\",\n  \"cookiesEnabled\": true,\n  \"language\": \"en-US\",\n  \"timezone\": \"America/New_York\",\n  \"riskScore\": 0.15\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Crea un nuevo dispositivo en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar dispositivo",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "devices",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "333",
+                  "description": "ID del dispositivo"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ipAddress\": \"192.168.10.55\",\n  \"lastSeen\": \"2023-06-15T10:30:00Z\",\n  \"isTrusted\": false,\n  \"riskScore\": 0.65\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Actualiza la información de un dispositivo existente."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar dispositivo",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "devices",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "333",
+                  "description": "ID del dispositivo"
+                }
+              ]
+            },
+            "description": "Elimina un dispositivo del sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar dispositivo por ID de dispositivo",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/by-id/:deviceId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "devices",
+                "by-id",
+                ":deviceId"
+              ],
+              "variable": [
+                {
+                  "key": "deviceId",
+                  "value": "D9999",
+                  "description": "ID único del dispositivo"
+                }
+              ]
+            },
+            "description": "Busca un dispositivo por su ID único."
+          },
+          "response": []
+        },
+        {
+          "name": "Dispositivos usados por múltiples clientes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/multiple-clients?minClients=2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "devices",
+                "multiple-clients"
+              ],
+              "query": [
+                {
+                  "key": "minClients",
+                  "value": "2",
+                  "description": "Número mínimo de clientes diferentes"
+                }
+              ]
+            },
+            "description": "Obtiene los dispositivos que han sido utilizados por múltiples clientes diferentes, lo que podría indicar fraude o uso compartido."
+          },
+          "response": []
+        },
+        {
+          "name": "Dispositivos con ubicaciones inusuales",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/unusual-locations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "devices",
+                "unusual-locations"
+              ]
+            },
+            "description": "Obtiene los dispositivos que han sido utilizados en múltiples ubicaciones distantes en corto tiempo, lo que podría indicar actividad sospechosa."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para gestionar dispositivos en el sistema."
+    },
+    {
+      "name": "Ubicaciones",
+      "item": [
+        {
+          "name": "Obtener todas las ubicaciones",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/locations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "locations"
+              ]
+            },
+            "description": "Obtiene una lista de todas las ubicaciones registradas en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener ubicación por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/locations/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "444",
+                  "description": "ID de la ubicación"
+                }
+              ]
+            },
+            "description": "Obtiene una ubicación específica por su ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Crear ubicación",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/locations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "locations"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"locationId\": \"L9999\",\n  \"country\": \"United States\",\n  \"city\": \"New York\",\n  \"latitude\": 40.7128,\n  \"longitude\": -74.0060,\n  \"riskLevel\": \"Low\",\n  \"postalCode\": \"10001\",\n  \"isKnownFraudHotspot\": false,\n  \"timezone\": \"America/New_York\",\n  \"isp\": \"Verizon\",\n  \"areaCode\": \"212\",\n  \"regionName\": \"New York\",\n  \"reputationScore\": 0.92\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Crea una nueva ubicación en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar ubicación",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/locations/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "444",
+                  "description": "ID de la ubicación"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"riskLevel\": \"Medium\",\n  \"isKnownFraudHotspot\": true,\n  \"reputationScore\": 0.65\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Actualiza la información de una ubicación existente."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar ubicación",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/locations/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "444",
+                  "description": "ID de la ubicación"
+                }
+              ]
+            },
+            "description": "Elimina una ubicación del sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar ubicaciones por coordenadas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/locations/coordinates?latitude=40.7128&longitude=-74.0060&radius=0.1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                "coordinates"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "40.7128",
+                  "description": "Latitud"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-74.0060",
+                  "description": "Longitud"
+                },
+                {
+                  "key": "radius",
+                  "value": "0.1",
+                  "description": "Radio de búsqueda en grados"
+                }
+              ]
+            },
+            "description": "Busca ubicaciones cercanas a las coordenadas especificadas."
+          },
+          "response": []
+        },
+        {
+          "name": "Ubicaciones de alto riesgo",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/locations/high-risk",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                "high-risk"
+              ]
+            },
+            "description": "Obtiene las ubicaciones identificadas como de alto riesgo basadas en puntuaciones de riesgo y actividad de transacciones."
+          },
+          "response": []
+        },
+        {
+          "name": "Ubicaciones inusuales por cliente",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/locations/unusual/:clientId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "locations",
+                "unusual",
+                ":clientId"
+              ],
+              "variable": [
+                {
+                  "key": "clientId",
+                  "value": "123",
+                  "description": "ID del cliente"
+                }
+              ]
+            },
+            "description": "Obtiene las ubicaciones inusuales o raras para un cliente específico, basado en su historial de transacciones."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para gestionar ubicaciones en el sistema."
+    },
+    {
+      "name": "Detección de Fraude",
+      "item": [
+        {
+          "name": "Ejecutar consulta personalizada",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/fraud-detection/query",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fraud-detection",
+                "query"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"MATCH (c:Client)-[:OWNS]->(a:Account)<-[:FROM]-(t:Transaction) WHERE t.amount > 10000 RETURN c, a, t LIMIT 10\",\n  \"params\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Ejecuta una consulta Cypher personalizada para análisis de fraude."
+          },
+          "response": []
+        },
+        {
+          "name": "Detectar posible lavado de dinero",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/fraud-detection/money-laundering",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fraud-detection",
+                "money-laundering"
+              ]
+            },
+            "description": "Detecta posibles patrones de lavado de dinero basados en transacciones circulares o estructuradas."
+          },
+          "response": []
+        },
+        {
+          "name": "Detectar uso inusual de dispositivos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/fraud-detection/unusual-device-usage",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fraud-detection",
+                "unusual-device-usage"
+              ]
+            },
+            "description": "Detecta patrones de uso inusuales de dispositivos, como un solo dispositivo usado por múltiples clientes."
+          },
+          "response": []
+        },
+        {
+          "name": "Detectar transacciones rápidas sucesivas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/fraud-detection/rapid-transactions?timeWindowMinutes=60&minTransactions=3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fraud-detection",
+                "rapid-transactions"
+              ],
+              "query": [
+                {
+                  "key": "timeWindowMinutes",
+                  "value": "60",
+                  "description": "Ventana de tiempo en minutos"
+                },
+                {
+                  "key": "minTransactions",
+                  "value": "3",
+                  "description": "Número mínimo de transacciones"
+                }
+              ]
+            },
+            "description": "Detecta transacciones múltiples realizadas en un corto período de tiempo, lo que podría indicar actividad fraudulenta."
+          },
+          "response": []
+        },
+        {
+          "name": "Detectar patrones de transacción inusuales",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/fraud-detection/unusual-patterns",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fraud-detection",
+                "unusual-patterns"
+              ]
+            },
+            "description": "Detecta patrones de transacción inusuales basados en montos, frecuencia, ubicaciones y otros factores."
+          },
+          "response": []
+        },
+        {
+          "name": "Detectar aumento inusual de actividad",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/fraud-detection/unusual-activity-increase?days=30&increaseThreshold=200",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fraud-detection",
+                "unusual-activity-increase"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "30",
+                  "description": "Período de análisis en días"
+                },
+                {
+                  "key": "increaseThreshold",
+                  "value": "200",
+                  "description": "Umbral de aumento en porcentaje"
+                }
+              ]
+            },
+            "description": "Detecta cuentas con un aumento inusual en la actividad de transacciones comparado con su historial."
+          },
+          "response": []
+        },
+        {
+          "name": "Agregación por categoría de riesgo",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/fraud-detection/risk-categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fraud-detection",
+                "risk-categories"
+              ]
+            },
+            "description": "Proporciona estadísticas agregadas sobre las transacciones agrupadas por categorías de riesgo."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para la detección y análisis de fraude."
+    },
+    {
+      "name": "Información del Sistema",
+      "item": [
+        {
+          "name": "Información general de la API",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api"
+              ]
+            },
+            "description": "Obtiene información general sobre la API y su versión."
+          },
+          "response": []
+        },
+        {
+          "name": "Estado del sistema",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Verifica el estado del sistema y si está funcionando correctamente."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para información general y estado del sistema."
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
