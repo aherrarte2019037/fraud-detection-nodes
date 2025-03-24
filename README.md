@@ -30,7 +30,7 @@ cd your-repo-name
 npm install
 ```
 
-3. Create a `.env` file in the root directory with your Neo4j AuraDB credentials:
+3. Create a `.env` file in the root directory with your AuraDB credentials:
 ```
 PORT=3000
 NODE_ENV=development

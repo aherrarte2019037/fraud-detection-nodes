@@ -8,9 +8,9 @@ const user = process.env.NEO4J_USERNAME;
 const password = process.env.NEO4J_PASSWORD;
 
 const driver = neo4j.driver(uri, neo4j.auth.basic(user, password), {
-  maxConnectionLifetime: 3 * 60 * 60 * 1000, // 3 hours
+  maxConnectionLifetime: 3 * 60 * 60 * 1000,
   maxConnectionPoolSize: 50,
-  connectionAcquisitionTimeout: 2 * 60 * 1000, // 2 minutes
+  connectionAcquisitionTimeout: 2 * 60 * 1000,
   disableLosslessIntegers: true
 });
 
